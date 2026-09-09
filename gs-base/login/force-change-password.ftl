@@ -25,7 +25,7 @@
         </div>
         <ul class="list-unstyled mb-0" id="syaratList" style="font-size: 0.85rem;">
           <li class="mb-1 syarat" data-rule="length">
-            <i class="ti ti-circle me-1"></i><span>Minimal ${minPasswordLength!14} karakter</span>
+            <i class="ti ti-circle me-1"></i><span>Minimal ${minPasswordLength!12} karakter</span>
           </li>
           <li class="mb-1 syarat" data-rule="upper">
             <i class="ti ti-circle me-1"></i><span>Mengandung huruf besar (A-Z)</span>
@@ -101,7 +101,7 @@
       const submitBtn  = document.getElementById('submitBtn');
       const btnText    = document.getElementById('btnText');
       const btnLoader  = document.getElementById('btnLoader');
-      const minLength  = ${minPasswordLength!14};
+      const minLength  = ${minPasswordLength!12};
 
       const items = document.querySelectorAll('#syaratList .syarat');
 
