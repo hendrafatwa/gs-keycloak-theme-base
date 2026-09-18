@@ -25,7 +25,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+          content="width=device-width, initial-scale=1.0" />
 
     <title>${pageTitleText}</title>
 
@@ -200,6 +200,21 @@
         flex-direction: column;
       }
       .auth-right-content { flex: 1 1 auto; }
+
+      /* Panel ilustrasi menempel di layar. Wrapper tidak lagi dikunci 100vh
+         supaya halaman bisa di-scroll, jadi tanpa ini kolom kiri akan ikut
+         memanjang mengikuti tinggi form di kanan. */
+      .auth-left-panel {
+        position: sticky;
+        top: 0;
+        max-height: 100vh;
+      }
+
+      /* Beri ruang bawah supaya tombol terakhir tidak mepet tepi layar saat
+         halaman memang perlu di-scroll. */
+      .auth-right-panel {
+        padding-bottom: 2rem !important;
+      }
 
       .auth-footer {
         margin-top: auto;
@@ -393,7 +408,7 @@
 
 <body>
     <!-- Content -->
-    <div class="authentication-wrapper authentication-cover" style="background-color: #fff; height: 100vh; overflow: hidden;">
+    <div class="authentication-wrapper authentication-cover" style="background-color: #fff; min-height: 100vh;">
         <!-- Logo -->
        <!-- <a href="#" class="app-brand auth-cover-brand">
             <span>
@@ -402,9 +417,9 @@
         </a> -->
         <!-- /Logo -->
 
-        <div class="authentication-inner row m-0" style="height: 100vh; overflow: hidden;">
+        <div class="authentication-inner row m-0" style="min-height: 100vh;">
             <!-- Left Illustration -->
-            <div class="d-none d-lg-flex col-lg-7 p-5 pb-5">
+            <div class="d-none d-lg-flex col-lg-7 p-5 pb-5 auth-left-panel">
                 <div class="auth-cover-bg d-flex justify-content-center align-items-center left-illustration" style="border-radius: 20px; overflow: hidden;">
                     <div id="authCarousel" class="carousel slide">
 
