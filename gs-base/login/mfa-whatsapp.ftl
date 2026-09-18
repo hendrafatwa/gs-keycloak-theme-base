@@ -31,7 +31,12 @@
           <strong>+${waGateway!""}</strong> dengan pesan:
         </small>
 
-        <div class="border rounded-2 bg-white p-3 text-start position-relative"
+        <!-- Pesan di kiri, QR di kanan. QR berisi deep link yang sama persis
+             dengan tombol "Buka WhatsApp", jadi user yang membuka halaman ini
+             di desktop cukup memindainya dari HP. -->
+        <div class="row g-3 align-items-center">
+          <div class="col-12 col-md-7">
+            <div class="border rounded-2 bg-white p-3 text-start position-relative"
              style="font-size: 0.85rem;">
 
           <!-- Tombol salin menyalin SELURUH pesan, bukan hanya baris KEY,
@@ -51,6 +56,18 @@ Saya ingin login ke ${waAppName!""}.
 KEY: ${waLoginKey!""}
 
 Mohon dikirimkan kode OTP untuk verifikasi login.</pre>
+            </div>
+          </div>
+
+          <!-- Kolom QR. Disembunyikan lewat JS kalau library gagal dimuat,
+               supaya tidak menyisakan kotak kosong. -->
+          <div class="col-12 col-md-5 text-center" id="waQrCol" style="display:none;">
+            <div id="waQrBox" data-link="${waDeepLink!""}"
+                 class="d-inline-block border rounded-2 bg-white p-2"></div>
+            <small class="text-muted d-block mt-2" style="font-size: 0.75rem;">
+              Scan dari HP untuk membuka WhatsApp
+            </small>
+          </div>
         </div>
 
         <small class="text-muted d-block mt-2">
@@ -206,6 +223,45 @@ Mohon dikirimkan kode OTP untuk verifikasi login.</pre>
       document.getElementById('waLinkBtn').addEventListener('click', function () {
         setTimeout(() => inputs[0].focus(), 500);
       });
+    })();
+    </script>
+
+    <style>
+      #waQrBox canvas, #waQrBox img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 170px;
+        display: block;
+      }
+    </style>
+
+    <!-- QR code: digambar di browser, tidak ada permintaan ke luar jaringan. -->
+    <script src="${url.resourcesPath}/assets/vendor/libs/qrcode/qrcode.min.js"></script>
+    <script>
+    (function () {
+      var box = document.getElementById('waQrBox');
+      var col = document.getElementById('waQrCol');
+      if (!box || !col || typeof QRCode === 'undefined') return;
+
+      var link = box.getAttribute('data-link');
+      if (!link) return;
+
+      try {
+        // correctLevel L dipilih supaya deep link yang panjang (pesan sudah
+        // ter-URL-encode) tetap muat tanpa QR menjadi terlalu rapat.
+        // Digambar 256px lalu dikecilkan lewat CSS: hasilnya tetap tajam
+        // saat kolom sempit, dan tidak pernah melebar keluar kartu login.
+        new QRCode(box, {
+          text: link,
+          width: 256,
+          height: 256,
+          correctLevel: QRCode.CorrectLevel.L
+        });
+        col.style.display = '';
+      } catch (e) {
+        // Data terlalu panjang atau canvas tidak didukung — cukup biarkan
+        // tombol dan pesan salin sebagai jalur utama.
+      }
     })();
     </script>
   </#if>
